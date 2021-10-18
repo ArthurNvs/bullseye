@@ -1,0 +1,55 @@
+//
+//  ContentView.swift
+//  Bullseye
+//
+//  Created by Arthur Neves on 13/10/21.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+    
+    @State private var game = Game()
+    @State private var alertIsVisible = false
+    @State private var sliderValue = 50.0
+    
+    var body: some View {
+        VStack {
+            Text("PUT THE BULLSEYE AS CLOSE AS YOU CAN TO")
+                .bold()
+                .kerning(2.0)
+                .multilineTextAlignment(.center)
+                .lineSpacing(4.0)
+                .font(.footnote)
+            Text(String(game.target))
+                .kerning(-1.0)
+                .font(.largeTitle)
+                .fontWeight(.black)
+            HStack {
+                Text("1")
+                    .bold()
+                Slider(value: $sliderValue, in: 1.0...100.0)
+                Text("100")
+                    .bold()
+            }
+            .font(.headline)
+            Button(action: {
+                print("Hello, SwiftUI!")
+                alertIsVisible = true
+            }) {
+                Text("Hit me")
+            }
+            .alert(isPresented: $alertIsVisible, content: {
+                let roundedValue = Int(sliderValue.rounded())
+                return Alert(title: Text("Hello!"), message: Text("Slider's value is \(roundedValue).\n" + "You scored \(game.points(targetValue: roundedValue)) points this round"), dismissButton: .default(Text("Awesome!")))
+            })
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+            
+    }
+}
